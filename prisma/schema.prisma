@@ -65,4 +65,5 @@ model Todo {
   createdBy User     @relation(fields: [userId], references: [id])
   createdAt DateTime
   userId    String
+  order     Int
 }
