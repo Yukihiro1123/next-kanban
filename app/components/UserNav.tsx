@@ -19,7 +19,7 @@ export const UserNav = async () => {
             src={session?.user?.image ?? "https://github.com/shadcn.png"}
             alt="@shadcn"
           />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>{session?.user?.name ?? "User"}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
       <PopoverContent className="w-80">
