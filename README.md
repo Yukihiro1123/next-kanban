@@ -1,4 +1,8 @@
 ```sh
+npm run dev
+```
+
+```sh
 
 npx create-next-app@latest
 
