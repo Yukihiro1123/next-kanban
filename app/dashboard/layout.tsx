@@ -16,9 +16,9 @@ export default async function HomeLayout({
   }
 
   return (
-    <>
+    <div className="h-full">
       <Navbar />
-      {children}
-    </>
+      <main className="pt-40 pb-20">{children}</main>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
-import Image from "next/image";
+// import Image from "next/image";
 import { UserNav } from "./UserNav";
-import Link from "next/link";
+// import Link from "next/link";
 
 const Navbar = () => {
   return (

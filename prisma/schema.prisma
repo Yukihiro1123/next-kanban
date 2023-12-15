@@ -59,7 +59,7 @@ model VerificationToken {
 }
 
 model Todo {
-  todoId    String   @id
+  todoId    String   @id @default(uuid())
   title     String
   overview  String
   createdBy User     @relation(fields: [userId], references: [id])
