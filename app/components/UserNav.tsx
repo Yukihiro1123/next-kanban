@@ -8,6 +8,13 @@ import React from "react";
 import { SignOutButton } from "./SignOutButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/auth";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export const UserNav = async () => {
   const session = await getServerSession(authOptions);
@@ -23,13 +30,15 @@ export const UserNav = async () => {
         </Avatar>
       </PopoverTrigger>
       <PopoverContent className="w-80">
-        <div className="space-y-2">
-          <h4 className="font-medium leading-none">{session?.user?.name}</h4>
-          <p className="text-sm text-muted-foreground">
-            {session?.user?.email}
-          </p>
-          <SignOutButton />
-        </div>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle>{session?.user?.name}</CardTitle>
+            <CardDescription>{session?.user?.email}</CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-1">
+            <SignOutButton />
+          </CardContent>
+        </Card>
       </PopoverContent>
     </Popover>
   );
