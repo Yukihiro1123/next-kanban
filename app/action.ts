@@ -28,6 +28,45 @@ export async function addList(formData: FormData) {
   revalidatePath("dashboard");
 }
 
+export async function editList(formData: FormData) {
+  "use server";
+  try {
+    console.log("Hi");
+    await prisma.list.update({
+      where: {
+        listId: formData.get("listId") as string,
+      },
+      data: {
+        title: formData.get("title") as string,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Failed to add list.",
+    };
+  }
+  revalidatePath("dashboard");
+}
+
+export async function deleteList(listId: string) {
+  "use server";
+  try {
+    console.log("Hi");
+    await prisma.list.delete({
+      where: {
+        listId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Failed to add list.",
+    };
+  }
+  revalidatePath("dashboard");
+}
+
 export async function addTodo(formData: FormData) {
   "use server";
   try {

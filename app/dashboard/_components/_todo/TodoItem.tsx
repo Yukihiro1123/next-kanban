@@ -2,7 +2,7 @@ import { Todo } from "@prisma/client";
 import { Draggable } from "@hello-pangea/dnd";
 import { Card } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { TodoForm } from "./TodoForm";
+import { TodoForm } from "../_todo/TodoForm";
 
 interface TodoItemProps {
   data: Todo;
@@ -14,6 +14,7 @@ export const TodoItem = ({ data, index }: TodoItemProps) => {
       {(provided) => (
         <Sheet>
           <SheetTrigger asChild>
+            {/* Todo Card */}
             <Card
               {...provided.draggableProps}
               {...provided.dragHandleProps}

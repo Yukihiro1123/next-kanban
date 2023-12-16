@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import { ListItem } from "./ListItem";
+import { ListItem } from "../_list/ListItem";
 import { ListWithTodos } from "@/types";
 import { updateListOrder, updateTodoOrder } from "@/app/action";
 

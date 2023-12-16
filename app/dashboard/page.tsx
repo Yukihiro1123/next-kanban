@@ -1,7 +1,7 @@
 import prisma from "../utils/db";
 
-import AddListButton from "./_components/AddListButton";
-import { ListContainer } from "./_components/ListContainer";
+import AddListButton from "./_components/_list/AddListButton";
+import { ListContainer } from "./_components/_list/ListContainer";
 
 export async function getList() {
   const data = await prisma.list.findMany({
