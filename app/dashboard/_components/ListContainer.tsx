@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ListItem } from "./ListItem";
 import { ListWithTodos } from "@/types";
+import { updateListOrder, updateTodoOrder } from "@/app/action";
 
 interface ListContainerProps {
   data: ListWithTodos[];
@@ -18,7 +19,7 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
 
 export const ListContainer = ({ data }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(data);
-  const onDragEnd = (result: any) => {
+  const onDragEnd = async (result: any) => {
     const { destination, source, type } = result;
     if (!destination) {
       return;
@@ -37,7 +38,7 @@ export const ListContainer = ({ data }: ListContainerProps) => {
       );
       setOrderedData(items);
       //server actions
-      // executeUpdateListOrder({ items, boardId });
+      await updateListOrder(items);
     }
     // User moves a card
     if (type === "card") {
@@ -62,23 +63,18 @@ export const ListContainer = ({ data }: ListContainerProps) => {
       }
       // Moving the card in the same list
       if (source.droppableId === destination.droppableId) {
-        const reorderedCards = reorder(
+        const reorderedTodos = reorder(
           sourceList.todos,
           source.index,
           destination.index
         );
-
-        reorderedCards.forEach((card, idx) => {
+        reorderedTodos.forEach((card, idx) => {
           card.order = idx;
         });
 
-        sourceList.todos = reorderedCards;
-
+        sourceList.todos = reorderedTodos;
         setOrderedData(newOrderedData);
-        // executeUpdateCardOrder({
-        //   boardId: boardId,
-        //   items: reorderedCards,
-        // });
+        await updateTodoOrder(reorderedTodos);
         // User moves the card to another list
       } else {
         // Remove card from the source list
@@ -95,10 +91,7 @@ export const ListContainer = ({ data }: ListContainerProps) => {
           card.order = idx;
         });
         setOrderedData(newOrderedData);
-        // executeUpdateCardOrder({
-        //   boardId: boardId,
-        //   items: destList.cards,
-        // });
+        await updateTodoOrder(destList.todos);
       }
     }
   };
