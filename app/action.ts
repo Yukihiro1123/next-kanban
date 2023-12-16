@@ -8,7 +8,6 @@ export async function updateTodoOrder(todoList: Todo[]) {
   "use server";
   let updatedTodo;
   try {
-    console.log("OK");
     const transaction = todoList.map((todo) =>
       prisma.todo.update({
         where: {
@@ -26,6 +25,6 @@ export async function updateTodoOrder(todoList: Todo[]) {
       error: "Failed to reorder.",
     };
   }
-  revalidatePath(``);
+  revalidatePath("dashboard");
   return { data: updatedTodo };
 }

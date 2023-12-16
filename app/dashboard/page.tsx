@@ -1,14 +1,18 @@
 import prisma from "../utils/db";
-import { TodoContainer } from "./_components/TodoContainer";
+import { ListContainer } from "./_components/ListContainer";
 
-export async function getTodo() {
-  const data = await prisma.todo.findMany();
+export async function getList() {
+  const data = await prisma.list.findMany({
+    include: {
+      todos: true,
+    },
+  });
   return data;
 }
 
 const Dashboard = async () => {
-  const todos = await getTodo();
-  return <TodoContainer todoList={todos} />;
+  const list = await getList();
+  return <ListContainer data={list} />;
 };
 
 export default Dashboard;
