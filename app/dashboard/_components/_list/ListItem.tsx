@@ -17,12 +17,9 @@ export const ListItem = ({ data, index }: ListItemProps) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="shrink-0 h-full w-[272px] select-none"
+          className="shrink-0 h-full w-[272px] select-none rounded-md bg-[#f1f2f4] shadow-md"
         >
-          <div
-            {...provided.dragHandleProps}
-            className="w-full rounded-md bg-[#f1f2f4] shadow-md pb-2"
-          >
+          <div {...provided.dragHandleProps} className="w-full  pb-2">
             <ListItemHeader data={data} />
             <Droppable droppableId={data.listId} type="card">
               {(provided) => (

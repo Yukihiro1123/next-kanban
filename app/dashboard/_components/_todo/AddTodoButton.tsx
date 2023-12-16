@@ -12,7 +12,7 @@ export const AddTodoButton = ({ listId }: AddTodoButtonProps) => {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost">
-          <Plus className="h-4 w-4" /> タスクの追加
+          <Plus className="h-4 w-4" />
         </Button>
       </SheetTrigger>
       <SheetContent>
