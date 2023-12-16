@@ -3,7 +3,6 @@ import { TodoContainer } from "./_components/TodoContainer";
 
 export async function getTodo() {
   const data = await prisma.todo.findMany();
-  console.log(data);
   return data;
 }
 

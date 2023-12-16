@@ -3,6 +3,7 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { Todo } from "@prisma/client";
 import { TodoList } from "./TodoList";
 import { useEffect, useState } from "react";
+import { updateTodoOrder } from "@/app/action";
 
 interface TodoContainerProps {
   todoList: Todo[];
@@ -38,6 +39,7 @@ export const TodoContainer = ({ todoList }: TodoContainerProps) => {
         (item, index) => ({ ...item, order: index })
       );
       setData(items);
+      updateTodoOrder(items);
     }
   };
   return (
