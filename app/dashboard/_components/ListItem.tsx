@@ -2,6 +2,10 @@ import { cn } from "@/lib/utils";
 import { ListWithTodos } from "@/types";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { TodoItem } from "./TodoItem";
+import { Button } from "@/components/ui/button";
+import { PlusCircle } from "lucide-react";
+import { AddTodoButton } from "./AddTodoButton";
+import { ListItemHeader } from "./ListItemHeader";
 
 interface ListItemProps {
   data: ListWithTodos;
@@ -21,7 +25,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
             {...provided.dragHandleProps}
             className="w-full rounded-md bg-[#f1f2f4] shadow-md pb-2"
           >
-            <>{data.title}</>
+            <ListItemHeader data={data} />
             <Droppable droppableId={data.listId} type="card">
               {(provided) => (
                 <ol
