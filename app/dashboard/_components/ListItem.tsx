@@ -2,9 +2,6 @@ import { cn } from "@/lib/utils";
 import { ListWithTodos } from "@/types";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { TodoItem } from "./TodoItem";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
-import { AddTodoButton } from "./AddTodoButton";
 import { ListItemHeader } from "./ListItemHeader";
 
 interface ListItemProps {
