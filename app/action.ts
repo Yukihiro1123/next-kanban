@@ -4,6 +4,30 @@ import { revalidatePath } from "next/cache";
 import prisma from "./utils/db";
 import { List, Todo } from "@prisma/client";
 
+export async function addList(formData: FormData) {
+  "use server";
+  try {
+    console.log("Hi");
+    await prisma.list.create({
+      data: {
+        title: formData.get("title") as string,
+        order: 1,
+        board: {
+          connect: {
+            boardId: "3b51d8d4-e964-4b77-916f-d308beacd315",
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Failed to add list.",
+    };
+  }
+  revalidatePath("dashboard");
+}
+
 export async function addTodo(formData: FormData) {
   "use server";
   try {
