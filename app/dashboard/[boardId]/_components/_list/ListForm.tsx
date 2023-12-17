@@ -6,14 +6,11 @@ import { updateList } from "@/app/actions/list/update-list";
 import { FormTextField } from "@/app/components/Form/FormTextField";
 import { Button } from "@/components/ui/button";
 import {
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
 import { useAction } from "@/hooks/use-action";
 import { List } from "@prisma/client";
@@ -104,7 +101,6 @@ export const ListForm = ({ list }: ListFormProps) => {
         </div>
         <DialogFooter>
           <Button type="submit">{list ? "更新" : "登録"}</Button>
-
           {list && <Button formAction={handleDeleteList}>削除</Button>}
         </DialogFooter>
       </form>

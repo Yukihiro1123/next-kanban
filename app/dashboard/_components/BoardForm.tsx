@@ -1,4 +1,5 @@
 "use client";
+
 import { createBoard } from "@/app/actions/board/create-board";
 import { deleteBoard } from "@/app/actions/board/delete-board";
 import { updateBoard } from "@/app/actions/board/update-board";
