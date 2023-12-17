@@ -47,23 +47,6 @@ export async function editList(formData: FormData) {
   revalidatePath("dashboard");
 }
 
-export async function deleteList(listId: string) {
-  "use server";
-  try {
-    await prisma.list.delete({
-      where: {
-        listId,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    return {
-      error: "Failed to add list.",
-    };
-  }
-  revalidatePath("dashboard");
-}
-
 export async function addTodo(formData: FormData) {
   "use server";
   try {

@@ -12,7 +12,14 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
       boardId: params.boardId,
     },
     include: {
-      todos: true,
+      todos: {
+        orderBy: {
+          order: "asc",
+        },
+      },
+    },
+    orderBy: {
+      order: "asc",
     },
   });
 

@@ -1,4 +1,7 @@
-import { addList, deleteList, editList } from "@/app/action";
+"use client";
+import { editList } from "@/app/action";
+import { createList } from "@/app/actions/list/create-list";
+import { deleteList } from "@/app/actions/list/delete-list";
 import { Button } from "@/components/ui/button";
 import {
   DialogClose,
@@ -9,19 +12,62 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { toast } from "@/components/ui/use-toast";
+import { useAction } from "@/hooks/use-action";
 import { List } from "@prisma/client";
+import { useParams } from "next/navigation";
 
 interface ListFormProps {
   list?: List;
 }
 
 export const ListForm = ({ list }: ListFormProps) => {
+  const params = useParams();
+  const { execute: executeCreate, fieldErrors: fieldErrorsCreate } = useAction(
+    createList,
+    {
+      onSuccess: (_) => {
+        toast({
+          title: "リストが作成されました",
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: error,
+        });
+      },
+    }
+  );
+  const handleAddList = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    const boardId = formData.get("boardId") as string;
+    console.log(title, boardId);
+    executeCreate({ title, boardId });
+  };
+
+  const { execute: executeDelete } = useAction(deleteList, {
+    onSuccess: (_) => {
+      toast({
+        title: "リストが削除されました",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: error,
+      });
+    },
+  });
+  const handleDeleteList = (boardId: string, listId: string) => {
+    executeDelete({ boardId, listId });
+  };
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>リストを{list ? "編集" : "追加"}</DialogTitle>
       </DialogHeader>
-      <form action={list ? editList : addList}>
+
+      <form action={list ? editList : handleAddList}>
+        <input type="hidden" name="boardId" value={params.boardId} />
         <input type="hidden" name="listId" value={list?.listId} />
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -36,12 +82,15 @@ export const ListForm = ({ list }: ListFormProps) => {
           </div>
         </div>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button type="submit">{list ? "更新" : "登録"}</Button>
-          </DialogClose>
+          <Button type="submit">{list ? "更新" : "登録"}</Button>
+
           {list && (
             <DialogClose asChild>
-              <Button onClick={() => deleteList(list.listId)}>削除</Button>
+              <Button
+                onClick={() => handleDeleteList(list.boardId, list.listId)}
+              >
+                削除
+              </Button>
             </DialogClose>
           )}
         </DialogFooter>
