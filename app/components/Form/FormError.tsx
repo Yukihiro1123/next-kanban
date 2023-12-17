@@ -14,8 +14,8 @@ export const FormError = ({ id, errors }: FormErrorsProps) => {
     >
       {errors?.[id]?.map((error: string) => (
         <div
-          key={error}
-          className="flex items-center font-medium p-2 border border-rose-500 bg-rose-500/10 rounded-sm"
+          key={id}
+          className="flex items-start font-medium p-2 border border-rose-500 bg-rose-500/10 rounded-sm"
         >
           <XCircle className="h-4 w-4 mr-2" />
           {error}

@@ -10,6 +10,8 @@ import { toast } from "@/components/ui/use-toast";
 import { useAction } from "@/hooks/use-action";
 import { Todo } from "@prisma/client";
 import { useParams } from "next/navigation";
+import { FormTextField } from "@/app/components/Form/FormTextField";
+import { FormTextAreaField } from "@/app/components/Form/FormTextAreaField";
 
 interface AddTodoButtonProps {
   listId?: string;
@@ -88,26 +90,18 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
         <SheetTitle>タスクの{todo ? "編集" : "追加"}</SheetTitle>
       </SheetHeader>
       <div className="grid gap-4 py-4">
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="name" className="text-right">
-            タイトル
-          </Label>
-          <Input
-            name="title"
-            className="col-span-3"
-            defaultValue={todo?.title}
-          />
-        </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="username" className="text-right">
-            概要
-          </Label>
-          <Textarea
-            name="description"
-            className="col-span-3"
-            defaultValue={todo?.description}
-          />
-        </div>
+        <FormTextField
+          name={"title"}
+          defaultValue={todo?.title ?? ""}
+          label="タイトル"
+          errors={todo ? fieldErrorsUpdate : fieldErrorsCreate}
+        />
+        <FormTextAreaField
+          name={"description"}
+          defaultValue={todo?.description ?? ""}
+          label="概要"
+          errors={todo ? fieldErrorsUpdate : fieldErrorsCreate}
+        />
       </div>
       <SheetFooter>
         {todo && <Button formAction={handleDeleteTodo}>削除</Button>}

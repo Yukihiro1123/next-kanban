@@ -1,4 +1,4 @@
-import { AuthForm } from "@/app/components/AuthForm";
+import { AuthForm } from "@/app/(auth)/_components/AuthForm";
 import { authOptions } from "@/app/utils/auth";
 
 import { getServerSession } from "next-auth";

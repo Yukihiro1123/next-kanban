@@ -2,7 +2,8 @@
 import { createBoard } from "@/app/actions/board/create-board";
 import { deleteBoard } from "@/app/actions/board/delete-board";
 import { updateBoard } from "@/app/actions/board/update-board";
-import { FormError } from "@/app/components/FormError";
+import { FormTextAreaField } from "@/app/components/Form/FormTextAreaField";
+import { FormTextField } from "@/app/components/Form/FormTextField";
 
 import { Button } from "@/components/ui/button";
 
@@ -12,9 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+
 import { useToast } from "@/components/ui/use-toast";
 import { useAction } from "@/hooks/use-action";
 import { Board } from "@prisma/client";
@@ -96,38 +95,21 @@ export const BoardForm = ({ board }: BoardFormProps) => {
       <form action={board ? handleUpdateBoard : handleAddBoard}>
         <input type="hidden" name="boardId" value={board?.boardId} />
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              タイトル
-            </Label>
-            <Input
-              name="title"
-              className="col-span-3"
-              defaultValue={board?.title}
-            />
-            <FormError
-              id="title"
-              errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              概要
-            </Label>
-            <Textarea
-              name="description"
-              className="col-span-3"
-              defaultValue={board?.description}
-            />
-            <FormError
-              id="description"
-              errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
-            />
-          </div>
+          <FormTextField
+            name={"title"}
+            defaultValue={board?.title ?? ""}
+            label="タイトル"
+            errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
+          />
+          <FormTextAreaField
+            name={"description"}
+            defaultValue={board?.description ?? ""}
+            label="概要"
+            errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
+          />
         </div>
         <DialogFooter>
           <Button type="submit">{board ? "更新" : "登録"}</Button>
-
           {board && (
             <Button onClick={() => handleDeleteBoard(board.boardId)}>
               削除

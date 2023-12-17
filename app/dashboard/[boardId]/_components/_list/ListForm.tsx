@@ -3,6 +3,7 @@
 import { createList } from "@/app/actions/list/create-list";
 import { deleteList } from "@/app/actions/list/delete-list";
 import { updateList } from "@/app/actions/list/update-list";
+import { FormTextField } from "@/app/components/Form/FormTextField";
 import { Button } from "@/components/ui/button";
 import {
   DialogClose,
@@ -92,16 +93,12 @@ export const ListForm = ({ list }: ListFormProps) => {
         <input type="hidden" name="boardId" value={params.boardId} />
         <input type="hidden" name="listId" value={list?.listId} />
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              タイトル
-            </Label>
-            <Input
-              name="title"
-              className="col-span-3"
-              defaultValue={list?.title}
-            />
-          </div>
+          <FormTextField
+            name={"title"}
+            defaultValue={list?.title ?? ""}
+            label="タイトル"
+            errors={list ? fieldErrorsUpdate : fieldErrorsCreate}
+          />
         </div>
         <DialogFooter>
           <Button type="submit">{list ? "更新" : "登録"}</Button>
