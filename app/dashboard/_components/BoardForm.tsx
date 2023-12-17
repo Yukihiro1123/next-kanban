@@ -36,7 +36,7 @@ export const BoardForm = ({ board }: BoardFormProps) => {
       toast({
         title: "ボードが作成されました",
       });
-      router.push(`/board/${data.boardId}`);
+      router.push(`/dashboard/${data.boardId}`);
     },
     onError: (error) => {
       toast({
