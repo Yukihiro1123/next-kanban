@@ -14,6 +14,7 @@ export const TodoItem = ({ data, index }: TodoItemProps) => {
       {(provided) => (
         <Sheet>
           <SheetTrigger asChild>
+            {/* Todo Card */}
             <Card
               {...provided.draggableProps}
               {...provided.dragHandleProps}

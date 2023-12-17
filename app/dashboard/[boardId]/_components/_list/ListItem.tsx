@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 import { ListWithTodos } from "@/types";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { TodoItem } from "./TodoItem";
+import { TodoItem } from "../_todo/TodoItem";
 import { ListItemHeader } from "./ListItemHeader";
+import { AddTodoButton } from "../_todo/AddTodoButton";
 
 interface ListItemProps {
   data: ListWithTodos;
@@ -16,12 +17,9 @@ export const ListItem = ({ data, index }: ListItemProps) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="shrink-0 h-full w-[272px] select-none"
+          className="shrink-0 h-full w-[272px] select-none rounded-md bg-[#f1f2f4] shadow-md"
         >
-          <div
-            {...provided.dragHandleProps}
-            className="w-full rounded-md bg-[#f1f2f4] shadow-md pb-2"
-          >
+          <div {...provided.dragHandleProps} className="w-full  pb-2">
             <ListItemHeader data={data} />
             <Droppable droppableId={data.listId} type="card">
               {(provided) => (
@@ -36,6 +34,9 @@ export const ListItem = ({ data, index }: ListItemProps) => {
                   {data.todos.map((todo, index) => (
                     <TodoItem index={index} key={todo.todoId} data={todo} />
                   ))}
+                  <div className="flex justify-start">
+                    <AddTodoButton listId={data.listId} />
+                  </div>
                   {provided.placeholder}
                 </ol>
               )}

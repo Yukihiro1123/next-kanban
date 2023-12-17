@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { TodoForm } from "./TodoForm";
 
@@ -11,8 +11,8 @@ export const AddTodoButton = ({ listId }: AddTodoButtonProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="default" size="icon">
-          <PlusCircle className="h-4 w-4" />
+        <Button variant="ghost">
+          <Plus className="h-4 w-4" />
         </Button>
       </SheetTrigger>
       <SheetContent>

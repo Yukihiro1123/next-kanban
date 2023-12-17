@@ -107,7 +107,7 @@ export const ListContainer = ({ data }: ListContainerProps) => {
           <ol
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className="flex gap-x-3 h-full"
+            className="flex gap-x-3 h-full py-3"
           >
             {orderedData.map((list, index) => {
               return <ListItem key={list.listId} index={index} data={list} />;
