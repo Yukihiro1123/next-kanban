@@ -26,7 +26,7 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   return (
     <div className="p-5">
       <AddListButton />
-      <ListContainer data={data} />
+      <ListContainer data={data} boardId={params.boardId} />
     </div>
   );
 };

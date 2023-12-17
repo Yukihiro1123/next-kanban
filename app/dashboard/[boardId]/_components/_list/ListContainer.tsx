@@ -3,10 +3,14 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ListItem } from "./ListItem";
 import { ListWithTodos } from "@/types";
-import { updateListOrder, updateTodoOrder } from "@/app/action";
+import { updateTodoOrder } from "@/app/action";
+import { useAction } from "@/hooks/use-action";
+import { toast } from "@/components/ui/use-toast";
+import { updateListOrder } from "@/app/actions/list/update-list-order";
 
 interface ListContainerProps {
   data: ListWithTodos[];
+  boardId: string;
 }
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
@@ -17,8 +21,16 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   return result;
 }
 
-export const ListContainer = ({ data }: ListContainerProps) => {
+export const ListContainer = ({ data, boardId }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(data);
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast({ title: "リストを更新しました" });
+    },
+    onError: (error) => {
+      toast({ title: error });
+    },
+  });
   const onDragEnd = async (result: any) => {
     const { destination, source, type } = result;
     if (!destination) {
@@ -38,7 +50,7 @@ export const ListContainer = ({ data }: ListContainerProps) => {
       );
       setOrderedData(items);
       //server actions
-      await updateListOrder(items);
+      executeUpdateListOrder({ items, boardId });
     }
     // User moves a card
     if (type === "card") {
