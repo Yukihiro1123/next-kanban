@@ -3,19 +3,19 @@ import AddListButton from "./_components/_list/AddListButton";
 import { ListContainer } from "./_components/_list/ListContainer";
 
 interface BoardIdPageProps {
-  boardId: string;
+  params: { boardId: string };
 }
 
-const BoardIdPage = async ({ boardId }: BoardIdPageProps) => {
+const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const data = await prisma.list.findMany({
     where: {
-      boardId,
+      boardId: params.boardId,
     },
     include: {
       todos: true,
-      board: true,
     },
   });
+  console.log(data);
   return (
     <div className="p-5">
       <AddListButton />
