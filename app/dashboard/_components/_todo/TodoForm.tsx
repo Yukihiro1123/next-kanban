@@ -8,6 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Textarea } from "@/components/ui/textarea";
 import { Todo } from "@prisma/client";
 
 interface AddTodoButtonProps {
@@ -38,7 +39,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
           <Label htmlFor="username" className="text-right">
             概要
           </Label>
-          <Input
+          <Textarea
             name="overview"
             className="col-span-3"
             defaultValue={todo?.overview}
