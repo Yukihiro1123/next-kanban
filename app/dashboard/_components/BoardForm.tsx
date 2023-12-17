@@ -1,12 +1,12 @@
 "use client";
-import { addBoard, deleteBoard, updateBoard } from "@/app/action";
 import { createBoard } from "@/app/actions/board/create-board";
+import { deleteBoard } from "@/app/actions/board/delete-board";
+import { updateBoard } from "@/app/actions/board/update-board";
 import { FormError } from "@/app/components/FormError";
 
 import { Button } from "@/components/ui/button";
 
 import {
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -20,6 +20,7 @@ import { useAction } from "@/hooks/use-action";
 import { Board } from "@prisma/client";
 
 import { useRouter } from "next/navigation";
+import { ElementRef, useRef } from "react";
 
 interface BoardFormProps {
   board?: Board;
@@ -27,11 +28,8 @@ interface BoardFormProps {
 
 export const BoardForm = ({ board }: BoardFormProps) => {
   const router = useRouter();
-  const handleDelete = (boardId: string) => {
-    deleteBoard(boardId);
-  };
   const { toast } = useToast();
-  const { execute, fieldErrors } = useAction(createBoard, {
+  const { execute: executeCreate, fieldErrors } = useAction(createBoard, {
     onSuccess: (data) => {
       toast({
         title: "ボードが作成されました",
@@ -47,14 +45,53 @@ export const BoardForm = ({ board }: BoardFormProps) => {
   const handleAddBoard = (formData: FormData) => {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
-    execute({ title, description });
+    executeCreate({ title, description });
+  };
+
+  const { execute: executeUpdate, fieldErrors: fieldErrorsUpdate } = useAction(
+    updateBoard,
+    {
+      onSuccess: (data) => {
+        toast({
+          title: "ボードが更新されました",
+        });
+        router.push(`/dashboard/${data.boardId}`);
+      },
+      onError: (error) => {
+        toast({
+          title: error,
+        });
+      },
+    }
+  );
+  const handleUpdateBoard = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    const description = formData.get("description") as string;
+    const boardId = formData.get("boardId") as string;
+    executeUpdate({ title, description, boardId });
+  };
+  const { execute: executeDelete } = useAction(deleteBoard, {
+    onSuccess: (_) => {
+      toast({
+        title: "ボードが削除されました",
+      });
+      router.push(`/dashboard`);
+    },
+    onError: (error) => {
+      toast({
+        title: error,
+      });
+    },
+  });
+  const handleDelete = (boardId: string) => {
+    executeDelete({ boardId });
   };
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
         <DialogTitle>ボードを{board ? "編集" : "追加"}</DialogTitle>
       </DialogHeader>
-      <form action={board ? updateBoard : handleAddBoard}>
+      <form action={board ? handleUpdateBoard : handleAddBoard}>
         <input type="hidden" name="boardId" value={board?.boardId} />
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
@@ -66,7 +103,10 @@ export const BoardForm = ({ board }: BoardFormProps) => {
               className="col-span-3"
               defaultValue={board?.title}
             />
-            {fieldErrors && <FormError id="title" errors={fieldErrors} />}
+            <FormError
+              id="title"
+              errors={board ? fieldErrorsUpdate : fieldErrors}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="username" className="text-right">
@@ -77,15 +117,17 @@ export const BoardForm = ({ board }: BoardFormProps) => {
               className="col-span-3"
               defaultValue={board?.description}
             />
-            <FormError id="description" errors={fieldErrors} />
+            <FormError
+              id="description"
+              errors={board ? fieldErrorsUpdate : fieldErrors}
+            />
           </div>
         </div>
         <DialogFooter>
           <Button type="submit">{board ? "更新" : "登録"}</Button>
+
           {board && (
-            <DialogClose asChild>
-              <Button onClick={() => handleDelete(board.boardId)}>削除</Button>
-            </DialogClose>
+            <Button onClick={() => handleDelete(board.boardId)}>削除</Button>
           )}
         </DialogFooter>
       </form>
