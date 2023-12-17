@@ -14,7 +14,7 @@ export async function updateTodo(formData: FormData) {
       },
       data: {
         title: formData.get("title") as string,
-        overview: formData.get("overview") as string,
+        description: formData.get("description") as string,
         createdAt: new Date(),
       },
     });

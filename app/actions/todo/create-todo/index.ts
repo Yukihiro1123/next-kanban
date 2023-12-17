@@ -9,7 +9,7 @@ import { InputType, ReturnType } from "./types";
 import prisma from "@/app/utils/db";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-  const { title, overview, listId, boardId } = data;
+  const { title, description, listId, boardId } = data;
   let todo;
   try {
     const lastCard = await prisma.todo.findFirst({
@@ -22,7 +22,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     todo = await prisma.todo.create({
       data: {
         title: title,
-        overview: overview ?? "",
+        description: description ?? "",
         order: newOrder,
         list: {
           connect: {
