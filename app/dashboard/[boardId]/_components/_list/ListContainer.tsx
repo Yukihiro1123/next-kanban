@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ListItem } from "./ListItem";
 import { ListWithTodos } from "@/types";
-import { updateTodoOrder } from "@/app/action";
+
 import { useAction } from "@/hooks/use-action";
 import { toast } from "@/components/ui/use-toast";
 import { updateListOrder } from "@/app/actions/list/update-list-order";
+import { updateTodoOrder } from "@/app/actions/todo/update-todo-order";
 
 interface ListContainerProps {
   data: ListWithTodos[];
@@ -26,6 +27,14 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
   const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
     onSuccess: () => {
       toast({ title: "リストを更新しました" });
+    },
+    onError: (error) => {
+      toast({ title: error });
+    },
+  });
+  const { execute: executeUpdateTodoOrder } = useAction(updateTodoOrder, {
+    onSuccess: () => {
+      toast({ title: "todoを更新しました" });
     },
     onError: (error) => {
       toast({ title: error });
@@ -80,30 +89,30 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
           source.index,
           destination.index
         );
-        reorderedTodos.forEach((card, idx) => {
-          card.order = idx;
+        reorderedTodos.forEach((todo, idx) => {
+          todo.order = idx;
         });
 
         sourceList.todos = reorderedTodos;
         setOrderedData(newOrderedData);
-        await updateTodoOrder(reorderedTodos);
+        executeUpdateTodoOrder({ items: reorderedTodos, boardId });
         // User moves the card to another list
       } else {
         // Remove card from the source list
-        const [movedCard] = sourceList.todos.splice(source.index, 1);
+        const [movedTodo] = sourceList.todos.splice(source.index, 1);
         // Assign the new listId to the moved card
-        movedCard.listId = destination.droppableId;
-        // Add card to the destination list
-        destList.todos.splice(destination.index, 0, movedCard);
-        sourceList.todos.forEach((card, idx) => {
-          card.order = idx;
+        movedTodo.listId = destination.droppableId;
+        // Add todo to the destination list
+        destList.todos.splice(destination.index, 0, movedTodo);
+        sourceList.todos.forEach((todo, idx) => {
+          todo.order = idx;
         });
         // Update the order for each card in the destination list
-        destList.todos.forEach((card, idx) => {
-          card.order = idx;
+        destList.todos.forEach((todo, idx) => {
+          todo.order = idx;
         });
         setOrderedData(newOrderedData);
-        await updateTodoOrder(destList.todos);
+        executeUpdateTodoOrder({ items: destList.todos, boardId });
       }
     }
   };
