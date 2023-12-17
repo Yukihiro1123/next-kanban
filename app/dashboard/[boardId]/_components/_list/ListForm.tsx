@@ -80,7 +80,9 @@ export const ListForm = ({ list }: ListFormProps) => {
       });
     },
   });
-  const handleDeleteList = (boardId: string, listId: string) => {
+  const handleDeleteList = (formData: FormData) => {
+    const boardId = formData.get("boardId") as string;
+    const listId = formData.get("listId") as string;
     executeDelete({ boardId, listId });
   };
   return (
@@ -103,15 +105,7 @@ export const ListForm = ({ list }: ListFormProps) => {
         <DialogFooter>
           <Button type="submit">{list ? "更新" : "登録"}</Button>
 
-          {list && (
-            <DialogClose asChild>
-              <Button
-                onClick={() => handleDeleteList(list.boardId, list.listId)}
-              >
-                削除
-              </Button>
-            </DialogClose>
-          )}
+          {list && <Button formAction={handleDeleteList}>削除</Button>}
         </DialogFooter>
       </form>
     </DialogContent>

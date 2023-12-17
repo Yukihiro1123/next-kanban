@@ -84,7 +84,8 @@ export const BoardForm = ({ board }: BoardFormProps) => {
       });
     },
   });
-  const handleDeleteBoard = (boardId: string) => {
+  const handleDeleteBoard = (formData: FormData) => {
+    const boardId = formData.get("boardId") as string;
     executeDelete({ boardId });
   };
   return (
@@ -110,11 +111,7 @@ export const BoardForm = ({ board }: BoardFormProps) => {
         </div>
         <DialogFooter>
           <Button type="submit">{board ? "更新" : "登録"}</Button>
-          {board && (
-            <Button onClick={() => handleDeleteBoard(board.boardId)}>
-              削除
-            </Button>
-          )}
+          {board && <Button formAction={handleDeleteBoard}>削除</Button>}
         </DialogFooter>
       </form>
     </DialogContent>
