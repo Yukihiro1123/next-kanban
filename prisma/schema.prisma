@@ -83,7 +83,7 @@ model Todo {
   todoId    String   @id @default(uuid())
   title     String
   overview  String
-  createdAt DateTime
+  createdAt DateTime @default(now())
   order     Int
   listId    String
   list      List?    @relation(fields: [listId], references: [listId], onDelete: Cascade)
