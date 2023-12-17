@@ -2,7 +2,7 @@ import { Todo } from "@prisma/client";
 import { Draggable } from "@hello-pangea/dnd";
 import { Card } from "@/components/ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { TodoForm } from "../_todo/TodoForm";
+import { TodoForm } from "./TodoForm";
 
 interface TodoItemProps {
   data: Todo;

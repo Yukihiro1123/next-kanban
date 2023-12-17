@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { TodoForm } from "../_todo/TodoForm";
+import { TodoForm } from "./TodoForm";
 
 interface AddTodoButtonProps {
   listId: string;

@@ -1,23 +1,21 @@
 import prisma from "../utils/db";
+import { AddBoardButton } from "./_components/AddBoardButton";
+import { BoardContainer } from "./_components/BoardContainer";
 
-import AddListButton from "./_components/_list/AddListButton";
-import { ListContainer } from "./_components/_list/ListContainer";
-
-export async function getList() {
-  const data = await prisma.list.findMany({
+export async function getBoards() {
+  const data = await prisma.board.findMany({
     include: {
-      todos: true,
+      lists: true,
     },
   });
   return data;
 }
 
 const Dashboard = async () => {
-  const list = await getList();
+  const boards = await getBoards();
   return (
     <div className="p-5">
-      <AddListButton />
-      <ListContainer data={list} />
+      <BoardContainer boards={boards} />
     </div>
   );
 };

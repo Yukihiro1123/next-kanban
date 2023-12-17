@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { ListWithTodos } from "@/types";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { TodoItem } from "../_todo/TodoItem";
-import { ListItemHeader } from "../_list/ListItemHeader";
+import { ListItemHeader } from "./ListItemHeader";
 import { AddTodoButton } from "../_todo/AddTodoButton";
 
 interface ListItemProps {

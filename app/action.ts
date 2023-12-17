@@ -4,10 +4,66 @@ import { revalidatePath } from "next/cache";
 import prisma from "./utils/db";
 import { List, Todo } from "@prisma/client";
 
-export async function addList(formData: FormData) {
+export async function addBoard(formData: FormData) {
+  "use server";
+  try {
+    await prisma.board.create({
+      data: {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Failed to add list.",
+    };
+  }
+  revalidatePath("dashboard");
+}
+
+export async function updateBoard(formData: FormData) {
+  "use server";
+  try {
+    await prisma.board.update({
+      where: {
+        boardId: formData.get("boardId") as string,
+      },
+      data: {
+        title: formData.get("title") as string,
+        description: formData.get("description") as string,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Failed to add list.",
+    };
+  }
+  revalidatePath("dashboard");
+}
+
+export async function deleteBoard(boardId: string) {
   "use server";
   try {
     console.log("Hi");
+    await prisma.board.delete({
+      where: {
+        boardId,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return {
+      error: "Failed to delete board.",
+    };
+  }
+  revalidatePath("dashboard");
+}
+
+export async function addList(formData: FormData) {
+  "use server";
+  try {
     await prisma.list.create({
       data: {
         title: formData.get("title") as string,
