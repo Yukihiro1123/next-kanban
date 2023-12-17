@@ -1,5 +1,6 @@
-import { deleteTodo, updateTodo } from "@/app/action";
+import { updateTodo } from "@/app/action";
 import { createTodo } from "@/app/actions/todo/create-todo";
+import { deleteTodo } from "@/app/actions/todo/delete-todo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,7 +28,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
     {
       onSuccess: (_) => {
         toast({
-          title: "リストが作成されました",
+          title: "todoが作成されました",
         });
       },
       onError: (error) => {
@@ -44,6 +45,25 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
     const boardId = formData.get("boardId") as string;
     executeCreate({ title, overview, listId, boardId });
   };
+
+  const { execute: executeDelete } = useAction(deleteTodo, {
+    onSuccess: (_) => {
+      toast({
+        title: "todoが削除されました",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: error,
+      });
+    },
+  });
+  const handleDeleteTodo = (formData: FormData) => {
+    const todoId = formData.get("todoId") as string;
+    const boardId = formData.get("boardId") as string;
+    executeDelete({ todoId, boardId });
+  };
+
   return (
     <form action={todo ? updateTodo : handleCreateTodo}>
       <input type="hidden" name="boardId" value={params.boardId} />
@@ -75,11 +95,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
         </div>
       </div>
       <SheetFooter>
-        {todo && (
-          <SheetClose asChild>
-            <Button onClick={() => deleteTodo(todo.todoId)}>削除</Button>
-          </SheetClose>
-        )}
+        {todo && <Button formAction={handleDeleteTodo}>削除</Button>}
 
         <Button type="submit">{todo ? "更新" : "登録"}</Button>
       </SheetFooter>
