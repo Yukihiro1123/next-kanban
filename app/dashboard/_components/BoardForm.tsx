@@ -20,7 +20,6 @@ import { useAction } from "@/hooks/use-action";
 import { Board } from "@prisma/client";
 
 import { useRouter } from "next/navigation";
-import { ElementRef, useRef } from "react";
 
 interface BoardFormProps {
   board?: Board;
@@ -83,7 +82,7 @@ export const BoardForm = ({ board }: BoardFormProps) => {
       });
     },
   });
-  const handleDelete = (boardId: string) => {
+  const handleDeleteBoard = (boardId: string) => {
     executeDelete({ boardId });
   };
   return (
@@ -127,7 +126,9 @@ export const BoardForm = ({ board }: BoardFormProps) => {
           <Button type="submit">{board ? "更新" : "登録"}</Button>
 
           {board && (
-            <Button onClick={() => handleDelete(board.boardId)}>削除</Button>
+            <Button onClick={() => handleDeleteBoard(board.boardId)}>
+              削除
+            </Button>
           )}
         </DialogFooter>
       </form>
