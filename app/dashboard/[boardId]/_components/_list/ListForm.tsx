@@ -43,7 +43,6 @@ export const ListForm = ({ list }: ListFormProps) => {
     const title = formData.get("title") as string;
     const listId = formData.get("listId") as string;
     const boardId = formData.get("boardId") as string;
-    console.log(title, boardId);
     executeUpdate({ title, listId, boardId });
   };
 
@@ -65,7 +64,6 @@ export const ListForm = ({ list }: ListFormProps) => {
   const handleAddList = (formData: FormData) => {
     const title = formData.get("title") as string;
     const boardId = formData.get("boardId") as string;
-    console.log(title, boardId);
     executeCreate({ title, boardId });
   };
 

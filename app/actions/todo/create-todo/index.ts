@@ -32,9 +32,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
   } catch (error) {
-    console.log(error);
     return {
-      error: "Failed to create.",
+      error: "タスクの作成に失敗しました",
     };
   }
 

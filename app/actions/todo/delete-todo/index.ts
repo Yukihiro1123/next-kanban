@@ -19,7 +19,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
   } catch (error) {
     return {
-      error: "Failed to delete.",
+      error: "タスクの削除に失敗しました",
     };
   }
 

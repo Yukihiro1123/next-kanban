@@ -24,7 +24,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
   } catch (error) {
     return {
-      error: "Failed to update.",
+      error: "ボードの更新に失敗しました",
     };
   }
 

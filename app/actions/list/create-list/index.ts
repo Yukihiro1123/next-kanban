@@ -30,9 +30,8 @@ const handler = async (data: InputType): Promise<ReturnType> => {
       },
     });
   } catch (error) {
-    console.log(error);
     return {
-      error: "Failed to add list.",
+      error: "リストの追加に失敗しました",
     };
   }
   revalidatePath(`/dashboard/${list.boardId}`);

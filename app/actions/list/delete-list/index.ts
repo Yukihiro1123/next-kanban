@@ -20,7 +20,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
   } catch (error) {
     return {
-      error: "Failed to delete.",
+      error: "リストの削除に失敗しました",
     };
   }
 

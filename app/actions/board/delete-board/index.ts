@@ -11,9 +11,8 @@ import prisma from "@/app/utils/db";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { boardId } = data;
-  console.log("delete action");
+
   try {
-    console.log(boardId, "Hello");
     await prisma.board.delete({
       where: {
         boardId,
@@ -21,7 +20,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
   } catch (error) {
     return {
-      error: "Failed to delete.",
+      error: "ボードの削除に失敗しました",
     };
   }
 

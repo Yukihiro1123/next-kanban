@@ -34,7 +34,7 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
   });
   const { execute: executeUpdateTodoOrder } = useAction(updateTodoOrder, {
     onSuccess: () => {
-      toast({ title: "todoを更新しました" });
+      toast({ title: "タスクを更新しました" });
     },
     onError: (error) => {
       toast({ title: error });

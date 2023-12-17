@@ -23,7 +23,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
     {
       onSuccess: (_) => {
         toast({
-          title: "todoが作成されました",
+          title: "タスクが作成されました",
         });
       },
       onError: (error) => {
@@ -44,7 +44,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
   const { execute: executeDelete } = useAction(deleteTodo, {
     onSuccess: (_) => {
       toast({
-        title: "todoが削除されました",
+        title: "タスクが削除されました",
       });
     },
     onError: (error) => {
@@ -63,7 +63,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
     updateTodo,
     {
       onSuccess: (_) => {
-        toast({ title: "todoが更新されました" });
+        toast({ title: "タスクが更新されました" });
       },
       onError: (error) => {
         toast({ title: error });
@@ -72,8 +72,6 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
   );
 
   const handleUpdateTodo = (formData: FormData) => {
-    console.log(fieldErrorsUpdate);
-    console.log("update");
     const todoId = formData.get("todoId") as string;
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;

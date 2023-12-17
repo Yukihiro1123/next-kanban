@@ -33,7 +33,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     updatedTodos = await prisma.$transaction(transaction);
   } catch (error) {
     return {
-      error: "Failed to reorder.",
+      error: "タスクの更新に失敗しました",
     };
   }
 
