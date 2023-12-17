@@ -15,7 +15,7 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
       todos: true,
     },
   });
-  console.log(data);
+
   return (
     <div className="p-5">
       <AddListButton />

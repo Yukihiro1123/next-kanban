@@ -46,7 +46,6 @@ export async function updateBoard(formData: FormData) {
 export async function deleteBoard(boardId: string) {
   "use server";
   try {
-    console.log("Hi");
     await prisma.board.delete({
       where: {
         boardId,
@@ -87,7 +86,6 @@ export async function addList(formData: FormData) {
 export async function editList(formData: FormData) {
   "use server";
   try {
-    console.log("Hi");
     await prisma.list.update({
       where: {
         listId: formData.get("listId") as string,
@@ -108,7 +106,6 @@ export async function editList(formData: FormData) {
 export async function deleteList(listId: string) {
   "use server";
   try {
-    console.log("Hi");
     await prisma.list.delete({
       where: {
         listId,
