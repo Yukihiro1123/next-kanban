@@ -28,19 +28,22 @@ interface BoardFormProps {
 export const BoardForm = ({ board }: BoardFormProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  const { execute: executeCreate, fieldErrors } = useAction(createBoard, {
-    onSuccess: (data) => {
-      toast({
-        title: "ボードが作成されました",
-      });
-      router.push(`/dashboard/${data.boardId}`);
-    },
-    onError: (error) => {
-      toast({
-        title: error,
-      });
-    },
-  });
+  const { execute: executeCreate, fieldErrors: fieldErrorsCreate } = useAction(
+    createBoard,
+    {
+      onSuccess: (data) => {
+        toast({
+          title: "ボードが作成されました",
+        });
+        router.push(`/dashboard/${data.boardId}`);
+      },
+      onError: (error) => {
+        toast({
+          title: error,
+        });
+      },
+    }
+  );
   const handleAddBoard = (formData: FormData) => {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
@@ -104,7 +107,7 @@ export const BoardForm = ({ board }: BoardFormProps) => {
             />
             <FormError
               id="title"
-              errors={board ? fieldErrorsUpdate : fieldErrors}
+              errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -118,7 +121,7 @@ export const BoardForm = ({ board }: BoardFormProps) => {
             />
             <FormError
               id="description"
-              errors={board ? fieldErrorsUpdate : fieldErrors}
+              errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
             />
           </div>
         </div>
