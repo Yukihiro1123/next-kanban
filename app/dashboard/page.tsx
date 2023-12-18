@@ -1,5 +1,4 @@
 import prisma from "../utils/db";
-import { AddBoardButton } from "./_components/AddBoardButton";
 import { BoardContainer } from "./_components/BoardContainer";
 
 export async function getBoards() {

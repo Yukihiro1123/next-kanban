@@ -9,10 +9,12 @@ import { FormTextField } from "@/app/components/Form/FormTextField";
 import { Button } from "@/components/ui/button";
 
 import {
+  Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 import { useToast } from "@/components/ui/use-toast";
@@ -20,18 +22,22 @@ import { useAction } from "@/hooks/use-action";
 import { Board } from "@prisma/client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface BoardFormProps {
   board?: Board;
+  children: React.ReactNode;
 }
 
-export const BoardForm = ({ board }: BoardFormProps) => {
+export const BoardForm = ({ board, children }: BoardFormProps) => {
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const { execute: executeCreate, fieldErrors: fieldErrorsCreate } = useAction(
     createBoard,
     {
       onSuccess: (data) => {
+        setOpen(false);
         toast({
           title: "ボードが作成されました",
         });
@@ -54,6 +60,7 @@ export const BoardForm = ({ board }: BoardFormProps) => {
     updateBoard,
     {
       onSuccess: (data) => {
+        setOpen(false);
         toast({
           title: "ボードが更新されました",
         });
@@ -74,10 +81,11 @@ export const BoardForm = ({ board }: BoardFormProps) => {
   };
   const { execute: executeDelete } = useAction(deleteBoard, {
     onSuccess: (_) => {
+      setOpen(false);
+      router.push(`/dashboard`);
       toast({
         title: "ボードが削除されました",
       });
-      router.push(`/dashboard`);
     },
     onError: (error) => {
       toast({
@@ -90,31 +98,34 @@ export const BoardForm = ({ board }: BoardFormProps) => {
     executeDelete({ boardId });
   };
   return (
-    <DialogContent className="sm:max-w-[425px]">
-      <DialogHeader>
-        <DialogTitle>ボードを{board ? "編集" : "追加"}</DialogTitle>
-      </DialogHeader>
-      <form action={board ? handleUpdateBoard : handleAddBoard}>
-        <input type="hidden" name="boardId" value={board?.boardId} />
-        <div className="grid gap-4 py-4">
-          <FormTextField
-            name={"title"}
-            defaultValue={board?.title ?? ""}
-            label="タイトル"
-            errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
-          />
-          <FormTextAreaField
-            name={"description"}
-            defaultValue={board?.description ?? ""}
-            label="概要"
-            errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
-          />
-        </div>
-        <DialogFooter>
-          <Button type="submit">{board ? "更新" : "登録"}</Button>
-          {board && <Button formAction={handleDeleteBoard}>削除</Button>}
-        </DialogFooter>
-      </form>
-    </DialogContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>ボードを{board ? "編集" : "追加"}</DialogTitle>
+        </DialogHeader>
+        <form action={board ? handleUpdateBoard : handleAddBoard}>
+          <input type="hidden" name="boardId" value={board?.boardId} />
+          <div className="grid gap-4 py-4">
+            <FormTextField
+              name={"title"}
+              defaultValue={board?.title ?? ""}
+              label="タイトル"
+              errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
+            />
+            <FormTextAreaField
+              name={"description"}
+              defaultValue={board?.description ?? ""}
+              label="概要"
+              errors={board ? fieldErrorsUpdate : fieldErrorsCreate}
+            />
+          </div>
+          <DialogFooter>
+            <Button type="submit">{board ? "更新" : "登録"}</Button>
+            {board && <Button formAction={handleDeleteBoard}>削除</Button>}
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };

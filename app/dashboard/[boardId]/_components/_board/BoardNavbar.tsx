@@ -1,5 +1,13 @@
+import { BoardForm } from "@/app/dashboard/_components/BoardForm";
+import { DialogTrigger } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Board } from "@prisma/client";
-import { BoardNavbarSetting } from "./BoardNavbarSetting";
+import { MoreHorizontalIcon } from "lucide-react";
 
 interface BoardNavbarProps {
   data: Board;
@@ -16,7 +24,18 @@ export const BoardNavbar = ({ data }: BoardNavbarProps) => {
           {data.description}
         </p>
       </div>
-      <BoardNavbarSetting board={data} />
+      <BoardForm board={data}>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <MoreHorizontalIcon />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <DialogTrigger>ボードの編集</DialogTrigger>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </BoardForm>
     </div>
   );
 };

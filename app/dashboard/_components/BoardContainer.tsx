@@ -1,6 +1,6 @@
 import { Board } from "@prisma/client";
 import Link from "next/link";
-import { AddBoardButton } from "./AddBoardButton";
+import { BoardForm } from "./BoardForm";
 
 interface BoardContainerProps {
   boards: Board[];
@@ -21,7 +21,14 @@ export const BoardContainer = ({ boards }: BoardContainerProps) => {
             <p className="relative font-semibold text-white">{board.title}</p>
           </Link>
         ))}
-        <AddBoardButton />
+        <BoardForm>
+          <div
+            role="button"
+            className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition"
+          >
+            <p className="text-sm">新しいボードを作成</p>
+          </div>
+        </BoardForm>
       </div>
     </div>
   );
