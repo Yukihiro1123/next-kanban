@@ -12,6 +12,7 @@ import React from "react";
 import { SignOutButton } from "./SignOutButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../utils/auth";
+import { ThemeSwitch } from "./ThemeSwitch";
 
 export const UserNav = async () => {
   const session = await getServerSession(authOptions);
@@ -30,7 +31,11 @@ export const UserNav = async () => {
         <DropdownMenuLabel>{session?.user?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>プロフィール</DropdownMenuItem>
-        <DropdownMenuItem>設定</DropdownMenuItem>
+        {/* <DropdownMenuItem>設定</DropdownMenuItem> */}
+        <DropdownMenuItem>
+          ダークモード &ensp;
+          <ThemeSwitch />
+        </DropdownMenuItem>
         <SignOutButton />
       </DropdownMenuContent>
     </DropdownMenu>

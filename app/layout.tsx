@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { NextAuthProvider } from "./(auth)/_components/NextAuthProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "./components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,15 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <NextAuthProvider>{children}</NextAuthProvider>
+        </ThemeProvider>
+
         <Toaster />
       </body>
     </html>

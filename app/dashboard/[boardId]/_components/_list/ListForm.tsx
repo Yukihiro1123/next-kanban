@@ -96,7 +96,7 @@ export const ListForm = ({ list, children }: ListFormProps) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>リストを{list ? "編集" : "追加"}</DialogTitle>
+          {!list && <DialogTitle>リストを追加</DialogTitle>}
         </DialogHeader>
         <form action={list ? handleUpdateList : handleAddList}>
           <input type="hidden" name="boardId" value={params.boardId} />

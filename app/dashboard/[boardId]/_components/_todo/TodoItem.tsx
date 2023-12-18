@@ -18,7 +18,7 @@ export const TodoItem = ({ data, index }: TodoItemProps) => {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             role="button"
-            className="truncate border-2 border-transparent hover:border-black py-2 px-3 text-sm bg-white rounded-md shadow-sm w-full text-start"
+            className="truncate border-2  hover:border-black py-2 px-3 text-sm rounded-md shadow-sm w-full text-start"
           >
             {data.title}
           </Card>
