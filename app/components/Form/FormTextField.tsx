@@ -17,8 +17,12 @@ export const FormTextField = ({
 }: FormTextFieldProps) => {
   return (
     <div className="grid  items-start gap-4">
-      {label && <Label htmlFor={name}>{label}</Label>}
-      <Input name={name} className="col-span-3" defaultValue={defaultValue} />
+      <Input
+        name={name}
+        className="col-span-3"
+        defaultValue={defaultValue}
+        placeholder={label}
+      />
       <FormError id={name} errors={errors} />
     </div>
   );

@@ -101,7 +101,7 @@ export const TodoForm = ({ listId, todo, children }: TodoFormProps) => {
           <input type="hidden" name="listId" value={listId} />
           <input type="hidden" name="todoId" value={todo && todo.todoId} />
           <SheetHeader>
-            <SheetTitle>タスクの{todo ? "編集" : "追加"}</SheetTitle>
+            {!todo && <SheetTitle>タスクの追加</SheetTitle>}
           </SheetHeader>
           <div className="grid gap-4 py-4">
             <FormTextField

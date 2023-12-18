@@ -18,7 +18,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
         <li
           {...provided.draggableProps}
           ref={provided.innerRef}
-          className="shrink-0 h-full w-[272px] select-none rounded-md bg-[#f1f2f4] shadow-md"
+          className="shrink-0 h-full w-[272px] select-none rounded-md  shadow-md border-2"
         >
           <div {...provided.dragHandleProps} className="w-full  pb-2">
             <ListItemHeader data={data} />
@@ -28,7 +28,7 @@ export const ListItem = ({ data, index }: ListItemProps) => {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   className={cn(
-                    "mx-1 px-1 py-0.5 flex flex-col gap-y-2",
+                    "mx-1 px-1 py-0.5 flex flex-col gap-y-2 ",
                     data.todos.length > 0 ? "mt-2" : "mt-0"
                   )}
                 >

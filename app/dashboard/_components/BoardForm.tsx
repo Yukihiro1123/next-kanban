@@ -102,7 +102,7 @@ export const BoardForm = ({ board, children }: BoardFormProps) => {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>ボードを{board ? "編集" : "追加"}</DialogTitle>
+          {!board && <DialogTitle>ボードを追加</DialogTitle>}
         </DialogHeader>
         <form action={board ? handleUpdateBoard : handleAddBoard}>
           <input type="hidden" name="boardId" value={board?.boardId} />
