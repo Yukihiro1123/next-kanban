@@ -1,6 +1,8 @@
 import prisma from "@/app/utils/db";
-import AddListButton from "./_components/_list/AddListButton";
 import { ListContainer } from "./_components/_list/ListContainer";
+import { ListForm } from "./_components/_list/ListForm";
+import { Button } from "@/components/ui/button";
+import { PlusSquareIcon } from "lucide-react";
 
 interface BoardIdPageProps {
   params: { boardId: string };
@@ -25,7 +27,11 @@ const BoardIdPage = async ({ params }: BoardIdPageProps) => {
 
   return (
     <div className="p-5">
-      <AddListButton />
+      <ListForm>
+        <Button>
+          <PlusSquareIcon className="mr-2 h-4 w-4" /> 新しいリストを追加
+        </Button>
+      </ListForm>
       <ListContainer data={data} boardId={params.boardId} />
     </div>
   );

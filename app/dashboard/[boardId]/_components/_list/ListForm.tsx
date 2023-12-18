@@ -6,26 +6,33 @@ import { updateList } from "@/app/actions/list/update-list";
 import { FormTextField } from "@/app/components/Form/FormTextField";
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { toast } from "@/components/ui/use-toast";
 import { useAction } from "@/hooks/use-action";
 import { List } from "@prisma/client";
+import { PlusSquareIcon } from "lucide-react";
 import { useParams } from "next/navigation";
+import { useState } from "react";
 
 interface ListFormProps {
   list?: List;
+  children: React.ReactNode;
 }
 
-export const ListForm = ({ list }: ListFormProps) => {
+export const ListForm = ({ list, children }: ListFormProps) => {
+  const [open, setOpen] = useState(false);
   const params = useParams();
   const { execute: executeCreate, fieldErrors: fieldErrorsCreate } = useAction(
     createList,
     {
       onSuccess: (_) => {
+        setOpen(false);
         toast({
           title: "リストが作成されました",
         });
@@ -48,6 +55,7 @@ export const ListForm = ({ list }: ListFormProps) => {
     updateList,
     {
       onSuccess: (_) => {
+        setOpen(false);
         toast({
           title: "リストが作成されました",
         });
@@ -67,6 +75,7 @@ export const ListForm = ({ list }: ListFormProps) => {
 
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess: (_) => {
+      setOpen(false);
       toast({
         title: "リストが削除されました",
       });
@@ -83,27 +92,29 @@ export const ListForm = ({ list }: ListFormProps) => {
     executeDelete({ boardId, listId });
   };
   return (
-    <DialogContent className="sm:max-w-[425px]">
-      <DialogHeader>
-        <DialogTitle>リストを{list ? "編集" : "追加"}</DialogTitle>
-      </DialogHeader>
-
-      <form action={list ? handleUpdateList : handleAddList}>
-        <input type="hidden" name="boardId" value={params.boardId} />
-        <input type="hidden" name="listId" value={list?.listId} />
-        <div className="grid gap-4 py-4">
-          <FormTextField
-            name={"title"}
-            defaultValue={list?.title ?? ""}
-            label="タイトル"
-            errors={list ? fieldErrorsUpdate : fieldErrorsCreate}
-          />
-        </div>
-        <DialogFooter>
-          <Button type="submit">{list ? "更新" : "登録"}</Button>
-          {list && <Button formAction={handleDeleteList}>削除</Button>}
-        </DialogFooter>
-      </form>
-    </DialogContent>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>リストを{list ? "編集" : "追加"}</DialogTitle>
+        </DialogHeader>
+        <form action={list ? handleUpdateList : handleAddList}>
+          <input type="hidden" name="boardId" value={params.boardId} />
+          <input type="hidden" name="listId" value={list?.listId} />
+          <div className="grid gap-4 py-4">
+            <FormTextField
+              name={"title"}
+              defaultValue={list?.title ?? ""}
+              label="タイトル"
+              errors={list ? fieldErrorsUpdate : fieldErrorsCreate}
+            />
+          </div>
+          <DialogFooter>
+            <Button type="submit">{list ? "更新" : "登録"}</Button>
+            {list && <Button formAction={handleDeleteList}>削除</Button>}
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
