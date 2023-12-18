@@ -1,10 +1,10 @@
-import { AuthForm } from "@/app/(auth)/_components/AuthForm";
 import { authOptions } from "@/app/utils/auth";
 
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
+import { AuthForm } from "../_components/AuthForm";
 
 const SignUp = async () => {
   const session = await getServerSession(authOptions);
