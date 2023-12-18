@@ -12,23 +12,17 @@ export const TodoItem = ({ data, index }: TodoItemProps) => {
   return (
     <Draggable draggableId={data.todoId} index={index}>
       {(provided) => (
-        <Sheet>
-          <SheetTrigger asChild>
-            {/* Todo Card */}
-            <Card
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              ref={provided.innerRef}
-              role="button"
-              className="truncate border-2 border-transparent hover:border-black py-2 px-3 text-sm bg-white rounded-md shadow-sm"
-            >
-              {data.title}
-            </Card>
-          </SheetTrigger>
-          <SheetContent>
-            <TodoForm todo={data} />
-          </SheetContent>
-        </Sheet>
+        <TodoForm todo={data}>
+          <Card
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            role="button"
+            className="truncate border-2 border-transparent hover:border-black py-2 px-3 text-sm bg-white rounded-md shadow-sm w-full text-start"
+          >
+            {data.title}
+          </Card>
+        </TodoForm>
       )}
     </Draggable>
   );

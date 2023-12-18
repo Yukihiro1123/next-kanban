@@ -8,6 +8,7 @@ import { useAction } from "@/hooks/use-action";
 import { toast } from "@/components/ui/use-toast";
 import { updateListOrder } from "@/app/actions/list/update-list-order";
 import { updateTodoOrder } from "@/app/actions/todo/update-todo-order";
+import { TodoCardForm } from "../_todo/TodoCardForm";
 
 interface ListContainerProps {
   data: ListWithTodos[];
@@ -125,17 +126,20 @@ export const ListContainer = ({ data, boardId }: ListContainerProps) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="lists" type="list" direction="horizontal">
         {(provided) => (
-          <ol
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="flex gap-x-3 h-full py-3"
-          >
-            {orderedData.map((list, index) => {
-              return <ListItem key={list.listId} index={index} data={list} />;
-            })}
-            {provided.placeholder}
-            <div className="flex-shrink-0 w-1" />
-          </ol>
+          <div className="flex">
+            <ol
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex gap-x-3 h-full py-3"
+            >
+              {orderedData.map((list, index) => {
+                return <ListItem key={list.listId} index={index} data={list} />;
+              })}
+              {provided.placeholder}
+              <div className="flex-shrink-0 w-1" />
+            </ol>
+            {/* <TodoCardForm /> */}
+          </div>
         )}
       </Droppable>
     </DragDropContext>

@@ -1,26 +1,38 @@
+"use client";
 import { updateTodo } from "@/app/actions/todo/update-todo";
 import { createTodo } from "@/app/actions/todo/create-todo";
 import { deleteTodo } from "@/app/actions/todo/delete-todo";
 import { Button } from "@/components/ui/button";
-import { SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { toast } from "@/components/ui/use-toast";
 import { useAction } from "@/hooks/use-action";
 import { Todo } from "@prisma/client";
 import { useParams } from "next/navigation";
 import { FormTextField } from "@/app/components/Form/FormTextField";
 import { FormTextAreaField } from "@/app/components/Form/FormTextAreaField";
+import React, { useState } from "react";
 
-interface AddTodoButtonProps {
+interface TodoFormProps {
   listId?: string;
   todo?: Todo;
+  children: React.ReactNode;
 }
 
-export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
+export const TodoForm = ({ listId, todo, children }: TodoFormProps) => {
+  const [open, setOpen] = useState(false);
   const params = useParams();
   const { execute: executeCreate, fieldErrors: fieldErrorsCreate } = useAction(
     createTodo,
     {
       onSuccess: (_) => {
+        setOpen(false);
         toast({
           title: "タスクが作成されました",
         });
@@ -42,6 +54,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
 
   const { execute: executeDelete } = useAction(deleteTodo, {
     onSuccess: (_) => {
+      setOpen(false);
       toast({
         title: "タスクが削除されました",
       });
@@ -62,6 +75,7 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
     updateTodo,
     {
       onSuccess: (_) => {
+        setOpen(false);
         toast({ title: "タスクが更新されました" });
       },
       onError: (error) => {
@@ -79,31 +93,36 @@ export const TodoForm = ({ listId, todo }: AddTodoButtonProps) => {
   };
 
   return (
-    <form action={todo ? handleUpdateTodo : handleCreateTodo}>
-      <input type="hidden" name="boardId" value={params.boardId} />
-      <input type="hidden" name="listId" value={listId} />
-      <input type="hidden" name="todoId" value={todo && todo.todoId} />
-      <SheetHeader>
-        <SheetTitle>タスクの{todo ? "編集" : "追加"}</SheetTitle>
-      </SheetHeader>
-      <div className="grid gap-4 py-4">
-        <FormTextField
-          name={"title"}
-          defaultValue={todo?.title ?? ""}
-          label="タイトル"
-          errors={todo ? fieldErrorsUpdate : fieldErrorsCreate}
-        />
-        <FormTextAreaField
-          name={"description"}
-          defaultValue={todo?.description ?? ""}
-          label="概要"
-          errors={todo ? fieldErrorsUpdate : fieldErrorsCreate}
-        />
-      </div>
-      <SheetFooter>
-        {todo && <Button formAction={handleDeleteTodo}>削除</Button>}
-        <Button type="submit">{todo ? "更新" : "登録"}</Button>
-      </SheetFooter>
-    </form>
+    <Sheet modal={false} open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetContent>
+        <form action={todo ? handleUpdateTodo : handleCreateTodo}>
+          <input type="hidden" name="boardId" value={params.boardId} />
+          <input type="hidden" name="listId" value={listId} />
+          <input type="hidden" name="todoId" value={todo && todo.todoId} />
+          <SheetHeader>
+            <SheetTitle>タスクの{todo ? "編集" : "追加"}</SheetTitle>
+          </SheetHeader>
+          <div className="grid gap-4 py-4">
+            <FormTextField
+              name={"title"}
+              defaultValue={todo?.title ?? ""}
+              label="タイトル"
+              errors={todo ? fieldErrorsUpdate : fieldErrorsCreate}
+            />
+            <FormTextAreaField
+              name={"description"}
+              defaultValue={todo?.description ?? ""}
+              label="概要"
+              errors={todo ? fieldErrorsUpdate : fieldErrorsCreate}
+            />
+          </div>
+          <SheetFooter>
+            {todo && <Button formAction={handleDeleteTodo}>削除</Button>}
+            <Button type="submit">{todo ? "更新" : "登録"}</Button>
+          </SheetFooter>
+        </form>
+      </SheetContent>
+    </Sheet>
   );
 };
