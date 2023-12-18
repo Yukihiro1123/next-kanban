@@ -3,7 +3,8 @@ import { ListWithTodos } from "@/types";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { TodoItem } from "../_todo/TodoItem";
 import { ListItemHeader } from "./ListItemHeader";
-import { AddTodoButton } from "../_todo/AddTodoButton";
+import { TodoForm } from "../_todo/TodoForm";
+import { Plus } from "lucide-react";
 
 interface ListItemProps {
   data: ListWithTodos;
@@ -35,7 +36,9 @@ export const ListItem = ({ data, index }: ListItemProps) => {
                     <TodoItem index={index} key={todo.todoId} data={todo} />
                   ))}
                   <div className="flex justify-start">
-                    <AddTodoButton listId={data.listId} />
+                    <TodoForm listId={data.listId}>
+                      <Plus className="h-4 w-4" />
+                    </TodoForm>
                   </div>
                   {provided.placeholder}
                 </ol>

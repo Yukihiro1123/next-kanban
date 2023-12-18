@@ -3,10 +3,16 @@ import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { ListItem } from "./ListItem";
 import { ListWithTodos } from "@/types";
-import { updateListOrder, updateTodoOrder } from "@/app/action";
+
+import { useAction } from "@/hooks/use-action";
+import { toast } from "@/components/ui/use-toast";
+import { updateListOrder } from "@/app/actions/list/update-list-order";
+import { updateTodoOrder } from "@/app/actions/todo/update-todo-order";
+import { TodoCardForm } from "../_todo/TodoCardForm";
 
 interface ListContainerProps {
   data: ListWithTodos[];
+  boardId: string;
 }
 
 function reorder<T>(list: T[], startIndex: number, endIndex: number) {
@@ -17,8 +23,24 @@ function reorder<T>(list: T[], startIndex: number, endIndex: number) {
   return result;
 }
 
-export const ListContainer = ({ data }: ListContainerProps) => {
+export const ListContainer = ({ data, boardId }: ListContainerProps) => {
   const [orderedData, setOrderedData] = useState(data);
+  const { execute: executeUpdateListOrder } = useAction(updateListOrder, {
+    onSuccess: () => {
+      toast({ title: "リストを更新しました" });
+    },
+    onError: (error) => {
+      toast({ title: error });
+    },
+  });
+  const { execute: executeUpdateTodoOrder } = useAction(updateTodoOrder, {
+    onSuccess: () => {
+      toast({ title: "タスクを更新しました" });
+    },
+    onError: (error) => {
+      toast({ title: error });
+    },
+  });
   const onDragEnd = async (result: any) => {
     const { destination, source, type } = result;
     if (!destination) {
@@ -38,7 +60,7 @@ export const ListContainer = ({ data }: ListContainerProps) => {
       );
       setOrderedData(items);
       //server actions
-      await updateListOrder(items);
+      executeUpdateListOrder({ items, boardId });
     }
     // User moves a card
     if (type === "card") {
@@ -68,30 +90,30 @@ export const ListContainer = ({ data }: ListContainerProps) => {
           source.index,
           destination.index
         );
-        reorderedTodos.forEach((card, idx) => {
-          card.order = idx;
+        reorderedTodos.forEach((todo, idx) => {
+          todo.order = idx;
         });
 
         sourceList.todos = reorderedTodos;
         setOrderedData(newOrderedData);
-        await updateTodoOrder(reorderedTodos);
+        executeUpdateTodoOrder({ items: reorderedTodos, boardId });
         // User moves the card to another list
       } else {
         // Remove card from the source list
-        const [movedCard] = sourceList.todos.splice(source.index, 1);
+        const [movedTodo] = sourceList.todos.splice(source.index, 1);
         // Assign the new listId to the moved card
-        movedCard.listId = destination.droppableId;
-        // Add card to the destination list
-        destList.todos.splice(destination.index, 0, movedCard);
-        sourceList.todos.forEach((card, idx) => {
-          card.order = idx;
+        movedTodo.listId = destination.droppableId;
+        // Add todo to the destination list
+        destList.todos.splice(destination.index, 0, movedTodo);
+        sourceList.todos.forEach((todo, idx) => {
+          todo.order = idx;
         });
         // Update the order for each card in the destination list
-        destList.todos.forEach((card, idx) => {
-          card.order = idx;
+        destList.todos.forEach((todo, idx) => {
+          todo.order = idx;
         });
         setOrderedData(newOrderedData);
-        await updateTodoOrder(destList.todos);
+        executeUpdateTodoOrder({ items: destList.todos, boardId });
       }
     }
   };
@@ -104,17 +126,20 @@ export const ListContainer = ({ data }: ListContainerProps) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="lists" type="list" direction="horizontal">
         {(provided) => (
-          <ol
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-            className="flex gap-x-3 h-full py-3"
-          >
-            {orderedData.map((list, index) => {
-              return <ListItem key={list.listId} index={index} data={list} />;
-            })}
-            {provided.placeholder}
-            <div className="flex-shrink-0 w-1" />
-          </ol>
+          <div className="flex">
+            <ol
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              className="flex gap-x-3 h-full py-3"
+            >
+              {orderedData.map((list, index) => {
+                return <ListItem key={list.listId} index={index} data={list} />;
+              })}
+              {provided.placeholder}
+              <div className="flex-shrink-0 w-1" />
+            </ol>
+            {/* <TodoCardForm /> */}
+          </div>
         )}
       </Droppable>
     </DragDropContext>
