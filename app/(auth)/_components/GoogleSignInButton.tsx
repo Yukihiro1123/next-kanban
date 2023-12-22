@@ -6,8 +6,9 @@ import GooogleIcon from "../../../public/google.svg";
 
 export const GoogleSignInButton = () => {
   return (
-    <Button onClick={() => signIn("google")} variant="outline" size="icon">
+    <Button onClick={() => signIn("google")} variant="outline" size="default">
       <Image src={GooogleIcon} alt="Google icon" className="w-6 h-6" />
+      Googleでログイン
     </Button>
   );
 };

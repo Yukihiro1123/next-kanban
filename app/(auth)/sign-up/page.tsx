@@ -15,17 +15,17 @@ const SignUp = async () => {
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Create an account
+          アカウント作成
         </h1>
         <p className="text-sm text-muted-foreground">
-          Enter your email below to create your account
+          メールアドレスを入力してアカウントを作成
         </p>
       </div>
       <AuthForm />
       <div className="text-gray-500 text-sm mt-2">
-        Alredy Have a account?{" "}
+        アカウントをお持ちですか?{" "}
         <Link className="text-blue-500 hover:underline" href="/login">
-          Log in
+          ログイン
         </Link>
       </div>
     </>

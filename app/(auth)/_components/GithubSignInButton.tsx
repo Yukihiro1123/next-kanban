@@ -6,8 +6,9 @@ import React from "react";
 
 export const GithubSignInButton = () => {
   return (
-    <Button onClick={() => signIn("github")} variant="outline" size="icon">
+    <Button onClick={() => signIn("github")} variant="outline" size="default">
       <GithubIcon />
+      Githubでログイン
     </Button>
   );
 };
