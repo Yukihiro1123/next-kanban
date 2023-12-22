@@ -17,9 +17,6 @@ const SignUp = async () => {
         <h1 className="text-2xl font-semibold tracking-tight">
           アカウント作成
         </h1>
-        <p className="text-sm text-muted-foreground">
-          メールアドレスを入力してアカウントを作成
-        </p>
       </div>
       <AuthForm />
       <div className="text-gray-500 text-sm mt-2">
