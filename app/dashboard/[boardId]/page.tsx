@@ -3,15 +3,21 @@ import { ListContainer } from "./_components/_list/ListContainer";
 import { ListForm } from "./_components/_list/ListForm";
 import { Button } from "@/components/ui/button";
 import { PlusSquareIcon } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/utils/auth";
 
 interface BoardIdPageProps {
   params: { boardId: string };
 }
 
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
+  const session = await getServerSession(authOptions);
   const data = await prisma.list.findMany({
     where: {
       boardId: params.boardId,
+      createdBy: {
+        id: session!.user!.id,
+      },
     },
     include: {
       todos: {

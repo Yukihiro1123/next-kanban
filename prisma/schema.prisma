@@ -47,6 +47,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Board         Board[]
+  List          List[]
+  Todo          Todo[]
 }
 
 model VerificationToken {
@@ -64,6 +67,8 @@ model Board {
   lists       List[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  createdBy   User     @relation(fields: [userId], references: [id])
+  userId      String
 }
 
 model List {
@@ -75,6 +80,8 @@ model List {
   todos     Todo[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  createdBy User     @relation(fields: [userId], references: [id])
+  userId    String
 
   @@index([boardId])
 }
@@ -87,4 +94,6 @@ model Todo {
   order       Int
   listId      String
   list        List?    @relation(fields: [listId], references: [listId], onDelete: Cascade)
+  createdBy   User     @relation(fields: [userId], references: [id])
+  userId      String
 }

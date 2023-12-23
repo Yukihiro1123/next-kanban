@@ -5,6 +5,8 @@ import { InputType, ReturnType } from "./types";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateList } from "./schema";
+import { authOptions } from "@/app/utils/auth";
+import { getServerSession } from "next-auth";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
   const { title, boardId } = data;
@@ -17,9 +19,10 @@ const handler = async (data: InputType): Promise<ReturnType> => {
     });
 
     const newOrder = lastList ? lastList.order + 1 : 1;
-
+    const session = await getServerSession(authOptions);
     list = await prisma.list.create({
       data: {
+        createdBy: { connect: { id: session!.user!.id } },
         title: title,
         order: newOrder,
         board: {
