@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { PlusSquareIcon } from "lucide-react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/utils/auth";
+import { redirect } from "next/navigation";
 
 interface BoardIdPageProps {
   params: { boardId: string };
@@ -12,6 +13,9 @@ interface BoardIdPageProps {
 
 const BoardIdPage = async ({ params }: BoardIdPageProps) => {
   const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect("/login");
+  }
   const data = await prisma.list.findMany({
     where: {
       boardId: params.boardId,
